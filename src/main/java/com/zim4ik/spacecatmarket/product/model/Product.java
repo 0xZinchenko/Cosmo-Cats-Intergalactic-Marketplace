@@ -20,11 +20,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 256)
     private String name;
 
-    @NotNull
-    @Positive
     private BigDecimal price;
 }
