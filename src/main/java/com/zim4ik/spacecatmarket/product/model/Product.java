@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 import java.math.BigDecimal;
@@ -23,4 +24,24 @@ public class Product {
     private String name;
 
     private BigDecimal price;
+
+
+    public void changePrice(BigDecimal newPrice) {
+        if (newPrice.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException(
+                    "Price cannot be negative"
+            );
+        }
+
+        this.price = newPrice;
+    }
+
+    public void rename(String newName) {
+        if (newName == null || newName.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Name is required"
+            );
+        }
+        this.name = newName;
+    }
 }
