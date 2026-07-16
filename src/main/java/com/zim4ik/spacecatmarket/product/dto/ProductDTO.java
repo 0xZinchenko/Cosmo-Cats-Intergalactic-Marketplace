@@ -11,6 +11,6 @@ public record ProductDTO(Long id,
                          String name,
 
                          @NotNull
-                         @Positive
+                         @PositiveOrZero
                          BigDecimal price) {
 }

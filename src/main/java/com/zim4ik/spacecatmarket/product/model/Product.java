@@ -4,10 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 import java.math.BigDecimal;
@@ -25,21 +23,34 @@ public class Product {
 
     private BigDecimal price;
 
+    public static Product create(String name, BigDecimal price) {
+        Product product = new Product();
+
+        product.updateName(name);
+        product.changePrice(price);
+        return product;
+    }
 
     public void changePrice(BigDecimal newPrice) {
-        if (newPrice.compareTo(BigDecimal.ZERO) < 0) {
+        if (newPrice == null || newPrice.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException(
-                    "Price cannot be negative"
+                    "Price must not be null and cannot be negative"
             );
         }
 
         this.price = newPrice;
     }
 
-    public void rename(String newName) {
+    public void updateName(String newName) {
         if (newName == null || newName.isBlank()) {
             throw new IllegalArgumentException(
                     "Name is required"
+            );
+        }
+
+        if(newName.length() >= 256) {
+            throw new IllegalStateException(
+                    "Name is too long"
             );
         }
         this.name = newName;

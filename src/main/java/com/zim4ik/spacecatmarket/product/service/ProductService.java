@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -20,8 +19,9 @@ public class ProductService {
 
 
     public ProductDTO createProduct(ProductDTO productDTO) {
-        Product entity = productMapper.toEntity(productDTO);
-        Product saveProduct = productRepository.save(entity);
+        Product product = Product.create(productDTO.name(),
+                productDTO.price());
+        Product saveProduct = productRepository.save(product);
         ProductDTO dto = productMapper.productToProductDto(saveProduct);
         return dto;
     }
@@ -43,8 +43,8 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product nit found" + id));
 
+        product.updateName(productDTO.name());
         product.changePrice(productDTO.price());
-        product.rename(productDTO.name());
 
         Product updatedProduct = productRepository.save(product);
 
