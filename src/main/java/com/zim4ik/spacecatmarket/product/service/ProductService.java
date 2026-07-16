@@ -33,9 +33,10 @@ public class ProductService {
                     .toList();
     }
 
-    public Optional<ProductDTO> getProductById(Long id) {
+    public ProductDTO getProductById(Long id) {
         return productRepository.findById(id)
-                .map(productMapper::productToProductDto);
+                .map(productMapper::productToProductDto)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found:" + id));
     }
 
     public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
