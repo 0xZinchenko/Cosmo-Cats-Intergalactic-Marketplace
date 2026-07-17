@@ -1,5 +1,6 @@
 package com.zim4ik.spacecatmarket.product.model;
 
+import com.zim4ik.spacecatmarket.product.exception.InvalidProductException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,7 +34,7 @@ public class Product {
 
     public void changePrice(BigDecimal newPrice) {
         if (newPrice == null || newPrice.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException(
+            throw new InvalidProductException(
                     "Price must not be null and cannot be negative"
             );
         }
@@ -43,13 +44,13 @@ public class Product {
 
     public void updateName(String newName) {
         if (newName == null || newName.isBlank()) {
-            throw new IllegalArgumentException(
+            throw new InvalidProductException(
                     "Name is required"
             );
         }
 
         if(newName.length() >= 256) {
-            throw new IllegalStateException(
+            throw new InvalidProductException(
                     "Name is too long"
             );
         }

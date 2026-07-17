@@ -2,6 +2,7 @@ package com.zim4ik.spacecatmarket.product.service;
 
 
 import com.zim4ik.spacecatmarket.product.dto.ProductDTO;
+import com.zim4ik.spacecatmarket.product.exception.ProductNotFoundException;
 import com.zim4ik.spacecatmarket.product.mapper.ProductMapper;
 import com.zim4ik.spacecatmarket.product.model.Product;
 import com.zim4ik.spacecatmarket.product.repository.ProductRepository;
@@ -36,12 +37,12 @@ public class ProductService {
     public ProductDTO getProductById(Long id) {
         return productRepository.findById(id)
                 .map(productMapper::productToProductDto)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found:" + id));
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product nit found" + id));
+                .orElseThrow(() -> new ProductNotFoundException(id));
 
         product.updateName(productDTO.name());
         product.changePrice(productDTO.price());
@@ -55,7 +56,7 @@ public class ProductService {
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("Not found" + id)
+                        new ProductNotFoundException(id)
                 );
 
         productRepository.delete(product);
